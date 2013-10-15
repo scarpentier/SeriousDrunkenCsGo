@@ -53,7 +53,7 @@ public Event_PlayerDeath(Handle:event, const String:name[], bool:dontBroadcast)
 
 public Event_RoundStart(Handle:event, const String:name[], bool:dontBroadcast) {
 	// Reset sip count
-	for(new i = 0; i < MaxClients; i++) {
+	for(new i = 1; i <= MaxClients; i++) {
 		playerSip[i] = 0;
 	}
 }
@@ -61,7 +61,7 @@ public Event_RoundStart(Handle:event, const String:name[], bool:dontBroadcast) {
 public Event_RoundEnd(Handle:event, const String:name[], bool:dontBroadcast) {
 	// Distribute winning sips
 	new winningTeamId = GetEventInt(event, "winner");
-	for(new i = 0; i = MaxClients; i++) {
+	for(new i = 1; i <= MaxClients; i++) {
 		if (GetClientTeam(GetClientOfUserId(i)) == winningTeamId) {
 			playerSip[i] += 1;
 		}
@@ -69,7 +69,7 @@ public Event_RoundEnd(Handle:event, const String:name[], bool:dontBroadcast) {
 
 	// Print total sips
 	new totalSips = 0;
-	for(new i = 0; i = MaxClients; i++) {
+	for(new i = 1; i <= MaxClients; i++) {
 		if (playerSip[i] != 0) {
 			decl String:name[64];
 			GetClientName(GetClientOfUserId(i), name, sizeof(name));
