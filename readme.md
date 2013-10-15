@@ -1,9 +1,8 @@
 #Serious Drunken Counter-Strike GO
 
-This is a Sourcemod plugin that will help you remember how many sips of beer to need drink while playing our **Serious Drunken CSGO** game.
+This [Sourcemod](http://sourcemod.net) plugin will help you remember how many sips of beer to need drink while playing our **Serious Drunken CSGO** game.
 
-Please drink responsibly.
-
+*Please drink responsibly.*
 ## Game rules
 You take a sip from your beer every time one of the following occurs:
 
@@ -16,15 +15,15 @@ You take a sip from your beer every time one of the following occurs:
 | Be MVP | 1 |
 
 ## Requirements
-### Humans
-* Be of legal drinking age
-* Lots of beer
+### Server
+* [Counter-Strike: Global Offensive Dedicated Server](https://developer.valvesoftware.com/wiki/Counter-Strike:_Global_Offensive_Dedicated_Servers)
+* [Metamod](http://wiki.alliedmods.net/Installing_Metamod:Source)
+* [Sourcemod](http://wiki.alliedmods.net/Installing_SourceMod)
 
 ### Client
 * [Steam](http://store.steampowered.com/about/)
 * [Counter-Strike: Global Offensive](http://store.steampowered.com/app/730/)
 
-### Server
-* [Counter-Strike: Global Offensive Dedicated Server](https://developer.valvesoftware.com/wiki/Counter-Strike:_Global_Offensive_Dedicated_Servers)
-* [Metamod](http://wiki.alliedmods.net/Installing_Metamod:Source)
-* [Sourcemod](http://wiki.alliedmods.net/Installing_SourceMod)
+### Humans
+* Be of legal drinking age
+* Lots of beer
