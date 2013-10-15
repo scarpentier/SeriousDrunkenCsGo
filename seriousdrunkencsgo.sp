@@ -39,15 +39,15 @@ public Event_PlayerDeath(Handle:event, const String:name[], bool:dontBroadcast)
 	
 	if(strcmp(weaponName, "knife") == 0) {
 		AddSipToUserId(attackerId, 5);
-		PrintToConsole(attacker, "You killed \"%s\" with a knife! That's 5 sips!", name);
+		PrintToChat(attacker, "You killed \"%s\" with a knife! That's 5 sips!", name);
 	}
 	else if (GetEventBool(event, "headshot")) {
 		AddSipToUserId(attackerId, 2);
-		PrintToConsole(attacker, "You killed \"%s\" with a headshot! That's 2 sips!", name);
+		PrintToChat(attacker, "You killed \"%s\" with a headshot! That's 2 sips!", name);
 	}	
 	else {
 		AddSipToUserId(attackerId, 1);
-		PrintToConsole(attacker, "You killed \"%s\"! That's 1 sip!", name);
+		PrintToChat(attacker, "You killed \"%s\"! That's 1 sip!", name);
 	}
 }
 
@@ -59,23 +59,26 @@ public Event_RoundStart(Handle:event, const String:name[], bool:dontBroadcast) {
 }
 
 public Event_RoundEnd(Handle:event, const String:name[], bool:dontBroadcast) {
-	// Distribute winning sips
 	new winningTeamId = GetEventInt(event, "winner");
+
+	// Distribute winning sips
+	// Print total sips and for each player
+	new totalSips = 0;
 	for(new i = 1; i <= MaxClients; i++) {
 		if (GetClientTeam(GetClientOfUserId(i)) == winningTeamId) {
 			playerSip[i] += 1;
 		}
-	}
-
-	// Print total sips
-	new totalSips = 0;
-	for(new i = 1; i <= MaxClients; i++) {
+	
 		if (playerSip[i] != 0) {
 			decl String:name[64];
-			GetClientName(GetClientOfUserId(i), name, sizeof(name));
-			PrintToChatAll("%s has to drink %s sip(s)", name, playerSip[i]);
+			new client = GetClientOfUserId(i);
+			GetClientName(client, name, sizeof(name));
+			
+			PrintToChat(client, "You have to take %s sips this round", playerSip[i]);
+			//PrintToChatAll("%s has to drink %s sip(s)", name, playerSip[i]);			
 		}
 	}
+	PrintToChatAll("A total of %s sips were taken this round", totalSips);
 }
 
 public Event_RoundMvp(Handle:event, const String:name[], bool:dontBroadcast) {
