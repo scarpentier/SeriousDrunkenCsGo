@@ -1,4 +1,4 @@
-#Serious Drunken Counter-Strike Global Offensive
+#Serious Drunken Counter-Strike GO
 
 This is a Sourcemod plugin that will help you remember how many sips of beer to need drink while playing our **Serious Drunken CSGO** game.
 
