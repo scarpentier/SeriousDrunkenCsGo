@@ -65,17 +65,19 @@ public Event_RoundEnd(Handle:event, const String:name[], bool:dontBroadcast) {
 	// Print total sips and for each player
 	new totalSips = 0;
 	for(new i = 1; i <= MaxClients; i++) {
-		if (GetClientTeam(GetClientOfUserId(i)) == winningTeamId) {
-			playerSip[i] += 1;
-		}
-	
-		if (playerSip[i] != 0) {
-			decl String:name[64];
-			new client = GetClientOfUserId(i);
-			GetClientName(client, name, sizeof(name));
-			
-			PrintToChat(client, "You have to take %s sips this round", playerSip[i]);
-			//PrintToChatAll("%s has to drink %s sip(s)", name, playerSip[i]);			
+		if(IsClientInGame(i) && !IsFakeClient(i)) {
+			if (GetClientTeam(GetClientOfUserId(i)) == winningTeamId) {
+				playerSip[i] += 1;
+			}
+		
+			if (playerSip[i] != 0) {
+				decl String:name[64];
+				new client = GetClientOfUserId(i);
+				GetClientName(client, name, sizeof(name));
+				
+				PrintToChat(client, "You have to take %s sips this round", playerSip[i]);
+				//PrintToChatAll("%s has to drink %s sip(s)", name, playerSip[i]);
+			}
 		}
 	}
 	PrintToChatAll("A total of %s sips were taken this round", totalSips);
