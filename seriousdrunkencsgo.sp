@@ -9,7 +9,7 @@ public Plugin:myinfo =
 	url = "http://spacebar.ca/"
 };
 
-new playerSip[MAXPLAYERS + 1]; // This index starts at 1
+new playerSip[MAXPLAYERS + 1]; // This index starts at 1.
 
 public OnPluginStart() {
 	PrintToServer("Serious Drunken CSGO!");
@@ -20,34 +20,42 @@ public OnPluginStart() {
 	LogMessage("[SeriousDrunkenCSGO] - Loaded");
 }
 
-public AddSipToUserId(userId, sips) {
-	playerSip[GetClientOfUserId(userId)] += sips;
+public AddSipToClient(client, sips, String:message[]) {
+	playerSip[client] = playerSip[client] + sips;
+	PrintToChat(client, "%s That's %d sips!. Total this round: %d", message, sips, playerSip[client]);
+}
+
+public AddSipToUserId(userId, sips, String:message[]) {
+	AddSipToClient(GetClientOfUserId(userId), sips, message);
 }
 
 public Event_PlayerDeath(Handle:event, const String:name[], bool:dontBroadcast)
 {
-	decl String:weaponName[12];
-	GetEventString(event, "weapon", weaponName, sizeof(weaponName))
-
 	new victimId = GetEventInt(event, "userid");
 	new attackerId = GetEventInt(event, "attacker");
 
+	if (victimId == attackerId)
+	{
+		// Death by suicide does not award any sips
+		return;
+	}
+	
+	decl String:weaponName[12];
+	GetEventString(event, "weapon", weaponName, sizeof(weaponName))
+	
 	decl String:name[64];
 	new victim = GetClientOfUserId(victimId);
 	new attacker = GetClientOfUserId(attackerId);
 	GetClientName(victim, name, sizeof(name));
 	
 	if(strcmp(weaponName, "knife") == 0) {
-		AddSipToUserId(attackerId, 5);
-		PrintToChat(attacker, "You killed \"%s\" with a knife! That's 5 sips!", name);
+		AddSipToUserId(attackerId, 5, "You killed with a knife!");
 	}
 	else if (GetEventBool(event, "headshot")) {
-		AddSipToUserId(attackerId, 2);
-		PrintToChat(attacker, "You killed \"%s\" with a headshot! That's 2 sips!", name);
+		AddSipToUserId(attackerId, 2, "You killed with a headshot!");
 	}	
 	else {
-		AddSipToUserId(attackerId, 1);
-		PrintToChat(attacker, "You killed \"%s\"! That's 1 sip!", name);
+		AddSipToUserId(attackerId, 1, "You killed!");
 	}
 }
 
@@ -66,23 +74,25 @@ public Event_RoundEnd(Handle:event, const String:name[], bool:dontBroadcast) {
 	new totalSips = 0;
 	for(new i = 1; i <= MaxClients; i++) {
 		if(IsClientInGame(i) && !IsFakeClient(i)) {
-			if (GetClientTeam(GetClientOfUserId(i)) == winningTeamId) {
-				playerSip[i] += 1;
+			new client = GetClientUserId(i);
+						
+			if (GetClientTeam(i) == winningTeamId) {
+				AddSipToClient(client, 1, "You won the game!");
 			}
-		
+			
 			if (playerSip[i] != 0) {
+				totalSips = totalSips + playerSip[i];
 				decl String:name[64];
-				new client = GetClientOfUserId(i);
-				GetClientName(client, name, sizeof(name));
+				GetClientName(i, name, sizeof(name));
 				
-				PrintToChat(client, "You have to take %s sips this round", playerSip[i]);
-				//PrintToChatAll("%s has to drink %s sip(s)", name, playerSip[i]);
+				PrintToChat(client, "You have to take %d sips this round", playerSip[i]);
+				PrintToChatAll("%s has to drink %d sip(s)", name, playerSip[i]);
 			}
 		}
 	}
-	PrintToChatAll("A total of %s sips were taken this round", totalSips);
+	PrintToChatAll("A total of %d sips were taken this round", totalSips);
 }
 
 public Event_RoundMvp(Handle:event, const String:name[], bool:dontBroadcast) {
-	AddSipToUserId(GetEventInt(event, "userid"), 1);
+	AddSipToUserId(GetEventInt(event, "userid"), 1, "You're the MVP!");
 }
