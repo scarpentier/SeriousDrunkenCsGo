@@ -8,11 +8,12 @@ You take a sip from your beer every time one of the following occurs:
 
 | Event | Sips |
 | :------ | ---: |
-| Kill | 1 |
+| Kill* | 1 |
 | Kill with headshot | 2 |
 | Kill with knife | 5 |
 | Win round | 1 |
 | Be MVP | 1 |
+\* Assists counts
 
 ## Requirements
 ### Server
