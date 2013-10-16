@@ -18,7 +18,7 @@ public OnPluginStart() {
 	HookEvent("round_start", Event_RoundStart, EventHookMode_Post);
 	HookEvent("round_end", Event_RoundEnd, EventHookMode_Post);
 	HookEvent("round_mvp", Event_RoundMvp, EventHookMode_Pre);
-	RegConsoleCmd("sm_drinks", ShowDrinks, "Show the current user's drink statistics");
+	RegConsoleCmd("sm_drinks", ShowDrinks);
 	LogMessage("[SeriousDrunkenCSGO] - Loaded");
 }
 
@@ -40,7 +40,7 @@ public Event_PlayerDeath(Handle:event, const String:name[], bool:dontBroadcast)
 
 	if (victimId == attackerId) return; // Death by suicide does not award any sips
 	
-	decl String:weaponName[12];
+	decl String:weaponName[6];
 	GetEventString(event, "weapon", weaponName, sizeof(weaponName))
 	
 	decl String:name[64];
@@ -95,6 +95,6 @@ public Event_RoundMvp(Handle:event, const String:name[], bool:dontBroadcast) {
 	AddSipToUserId(GetEventInt(event, "userid"), 1, "You're the MVP!");
 }
 
-Action:ShowDrinks(client, args) {
+public Action:ShowDrinks(client, args) {
 	ReplyToCommand(client, "You drank %d sips since the beginning of the game", playerSipTotal[client]);
 }
